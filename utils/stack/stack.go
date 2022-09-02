@@ -3,5 +3,5 @@ package stack
 import "fmt"
 
 func Stack() {
-	fmt.Printf("Hello")
+	fmt.Printf("Stack")
 }
