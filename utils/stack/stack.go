@@ -19,12 +19,17 @@ func (c *Stack[T]) Push(value T) {
 	c.stack.PushFront(value)
 }
 
-func (c *Stack[T]) Pop() error {
+func (c *Stack[T]) Pop() (T, error) {
+	var r T
 	if c.stack.Len() > 0 {
 		ele := c.stack.Front()
-		c.stack.Remove(ele)
+		if val, ok := c.stack.Front().Value.(T); ok {
+			c.stack.Remove(ele)
+			return val, nil
+		}
+		return r, fmt.Errorf("peep error: stack datatype is incorrect")
 	}
-	return fmt.Errorf("Pop Error: Stack is empty")
+	return r, fmt.Errorf("Pop Error: Stack is empty")
 }
 
 func (c *Stack[T]) Front() (T, error) {
