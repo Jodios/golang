@@ -5,21 +5,21 @@ import (
 	"fmt"
 )
 
-type Stack struct {
+type Stack[T any] struct {
 	stack *list.List
 }
 
-func New() *Stack {
-	return &Stack{
+func New[T any]() *Stack[T] {
+	return &Stack[T]{
 		stack: list.New(),
 	}
 }
 
-func (c *Stack) Push(value string) {
+func (c *Stack[T]) Push(value T) {
 	c.stack.PushFront(value)
 }
 
-func (c *Stack) Pop() error {
+func (c *Stack[T]) Pop() error {
 	if c.stack.Len() > 0 {
 		ele := c.stack.Front()
 		c.stack.Remove(ele)
@@ -27,20 +27,21 @@ func (c *Stack) Pop() error {
 	return fmt.Errorf("Pop Error: Stack is empty")
 }
 
-func (c *Stack) Front() (string, error) {
+func (c *Stack[T]) Front() (T, error) {
+	var r T
 	if c.stack.Len() > 0 {
-		if val, ok := c.stack.Front().Value.(string); ok {
+		if val, ok := c.stack.Front().Value.(T); ok {
 			return val, nil
 		}
-		return "", fmt.Errorf("Peep Error: Stack Datatype is incorrect")
+		return r, fmt.Errorf("peep error: stack datatype is incorrect")
 	}
-	return "", fmt.Errorf("Peep Error: Stack is empty")
+	return r, fmt.Errorf("peep error: stack is empty")
 }
 
-func (c *Stack) Size() int {
+func (c *Stack[T]) Size() int {
 	return c.stack.Len()
 }
 
-func (c *Stack) Empty() bool {
+func (c *Stack[T]) Empty() bool {
 	return c.stack.Len() == 0
 }
